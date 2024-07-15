@@ -4,23 +4,12 @@ from django.utils.translation import gettext_lazy as _
 from django.utils.crypto import get_random_string
 from django.db.models.signals import pre_delete
 from django.dispatch import receiver
+from .constant import GENDER_CHOICES, PROVINCE_CHOICES
 
 class User(AbstractUser):
     email = models.EmailField(_('email address'), unique=True)
     father_name = models.CharField(max_length=50)
-    GENDER_CHOICES = (
-        ('Female', 'Female'),
-        ('Male', 'Male'),
-        ('Other', 'Other'),
-    )
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
-    PROVINCE_CHOICES = (
-        ('Punjab', 'Punjab'),
-        ('Sindh', 'Sindh'),
-        ('KPK', 'KPK'),
-        ('Balochistan', 'Balochistan'),
-        ('Gilgit Baltistan', 'Gilgit Baltistan'),
-    )
     province = models.CharField(max_length=50, choices=PROVINCE_CHOICES)
     city = models.CharField(max_length=50)
     dob = models.DateField(null=True, blank=True)
