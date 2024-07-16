@@ -1,0 +1,14 @@
+
+{% include "index.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>Home Page</h2>
+    <div class="mb-3">
+        <a href="{% url 'login' %}" class="btn btn-primary">login</a>
+        <a href="{% url 'signup' %}" class="btn btn-primary">Signup</a>
+        
+    </div>
+    <!-- Other content of the dashboard -->
+</div>
+{% endblock %}
