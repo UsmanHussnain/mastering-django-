@@ -1,0 +1,56 @@
+{% extends 'adminpanel/adminIndex.html' %}
+{% block content %}
+{%  load static %}
+
+     <nav class="navbar-default navbar-side" role="navigation">
+ <div class="sidebar-collapse">
+     <ul class="nav" id="main-menu">
+     <li class="text-center">
+         <img src="{%static 'img/find_user.png' %}" class="user-image img-responsive"/>
+         </li>
+     
+         
+         <li>
+             <a  href="{% url 'adminIndex' %}"><i class="fa fa-dashboard fa-3x"></i> Dashboard</a>
+         </li>
+         <li>
+            <a href="#"><i class="fa fa-sitemap fa-3x"></i> Product <span class="fa arrow"></span></a>
+            <ul class="nav nav-second-level">
+                <li>
+                    <a href="{% url 'add-product' %}">Add Product</a>
+                </li>
+                <li>
+                    <a href="{% url 'productList' %}">View Products</a>
+                </li>
+                
+            </ul>
+          </li>
+          <li>
+             <a  href="{% url 'querries' %}"><i class="fa fa-desktop fa-3x"></i> Querries </a>
+         </li>
+          <li>
+             <a  href="{% url 'uiElements' %}"><i class="fa fa-desktop fa-3x"></i> UI Elements</a>
+         </li>
+         <li>
+             <a  href="{% url 'tabPanel' %}"><i class="fa fa-qrcode fa-3x"></i> Tabs & Panels</a>
+         </li>
+                <li  >
+             <a   href="{% url 'charts' %}"><i class="fa fa-bar-chart-o fa-3x"></i> Morris Charts</a>
+         </li>	
+           <li  >
+             <a  href="{% url 'table' %}"><i class="fa fa-table fa-3x"></i> Table Examples</a>
+         </li>
+         <li  >
+             <a  href="{% url 'forms' %}"><i class="fa fa-edit fa-3x"></i> Forms </a>
+         </li>				
+         
+       <li  >
+             <a  href="{% url 'blankpage' %}"><i class="fa fa-square-o fa-3x"></i> Blank Page</a>
+         </li>	
+     </ul>
+    
+ </div>
+ 
+</nav>  
+
+{% endblock content %}

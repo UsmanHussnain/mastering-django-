@@ -1,0 +1,208 @@
+{% extends "base/baseIndex.html" %}
+{% load static %}
+{% block content %}
+{% include 'base/navbar.html' %}
+
+{% include 'base/bottombar.html'%}
+
+        <!-- Breadcrumb Start -->
+        <div class="breadcrumb-wrap">
+            <div class="container-fluid">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'products' %}">Products</a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- Breadcrumb End -->        
+        <!-- Product List Start -->
+        <div class="product-view">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="product-view-top">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="product-search">
+                                                <form action="{% url 'search' %}" method="GET" class="search">
+                                                    {% csrf_token %}
+                                                    <input type="text" placeholder="Search" aria-label="Search" name="q">
+                                                    <button type="submit"><i class="fa fa-search"></i></button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-md-6">
+                                            <div class="product-price-range">
+                                                <div class="dropdown">
+                                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        Product price range
+                                                    </button>
+                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                        <a href="?price=0-50{% if query %}&q={{ query }}{% endif %}" class="dropdown-item">$0 to $50</a>
+                                                        <a href="?price=51-100{% if query %}&q={{ query }}{% endif %}" class="dropdown-item">$51 to $100</a>
+                                                        <a href="?price=101-150{% if query %}&q={{ query }}{% endif %}" class="dropdown-item">$101 to $150</a>
+                                                        <a href="?price=151-200{% if query %}&q={{ query }}{% endif %}" class="dropdown-item">$151 to $200</a>
+                                                        <a href="?price=201-250{% if query %}&q={{ query }}{% endif %}" class="dropdown-item">$201 to $250</a>
+                                                        <a href="?price=251-300{% if query %}&q={{ query }}{% endif %}" class="dropdown-item">$251 to $300</a>
+                                                        <a href="?price=301-350{% if query %}&q={{ query }}{% endif %}" class="dropdown-item">$301 to $350</a>
+                                                        <a href="?price=351-400{% if query %}&q={{ query }}{% endif %}" class="dropdown-item">$351 to $400</a>
+                                                        <a href="?price=401-450{% if query %}&q={{ query }}{% endif %}" class="dropdown-item">$401 to $450</a>
+                                                        <a href="?price=451-500{% if query %}&q={{ query }}{% endif %}" class="dropdown-item">$451 to $500</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            {% for product in products%}
+                            <div class="col-md-4">
+                                <div class="product-item">
+                                    <div class="product-title">
+                                        <a href="{% url 'product_detail' product.id%}">{{ product.name }}</a>
+                                        <div class="ratting">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                    </div>
+                                    <div class="product-image">
+                                        <a href="{% url 'product_detail' product.id%}">
+                                            <img src="{{ product.image.url }}" alt="{{ product.name }}" width=200 height=300>
+                                        </a>
+                                        <div class="product-action">
+                                            <form action="{% url 'product_detail' product.id %}" method="POST" class="d-inline">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="product" value="{{ product.id }}">
+                                                <button type="submit" name="add" value="True" class="btn btn-primary"><i class="fa fa-cart-plus"></i></button>
+                                            </form>
+                                            <a href="{% url 'add_to_wishlist' product.id %}"><i class="fa fa-heart"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-price">
+                                        <h3><span>$</span>{{product.price}}</h3>
+                                        <a class="btn" href="{% url 'product_detail' product.id %}"><i class="fa fa-shopping-cart"></i>Buy Now</a>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                  
+
+                        <!-- Pagination Start -->
+                        <div class="col-md-12">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-center">
+                                    {% if products.has_previous %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ products.previous_page_number }}">Previous</a>
+                                        </li>
+                                    {% else %}
+                                        <li class="page-item disabled">
+                                            <a class="page-link" href="#">Previous</a>
+                                        </li>
+                                    {% endif %}
+
+                                    {% for page_num in products.paginator.page_range %}
+                                        {% if page_num == products.number %}
+                                            <li class="page-item active">
+                                                <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                                            </li>
+                                        {% elif page_num > products.number|add:'-3' and page_num < products.number|add:'3' %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if products.has_next %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ products.next_page_number }}">Next</a>
+                                        </li>
+                                    {% else %}
+                                        <li class="page-item disabled">
+                                            <a class="page-link" href="#">Next</a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </nav>
+                        </div>
+                        <!-- Pagination End -->
+                    </div>        
+                    
+                    <!-- Side Bar Start -->
+            <div class="col-lg-4 sidebar">
+                <div class="sidebar-widget category">
+                    <h2 class="title">Category</h2>
+                    <nav class="navbar bg-light">
+                        <ul class="navbar-nav">
+                            <li> <a href="{% url 'products' %}" class="nav-link">All</a></li>
+                            {% for category in categories %}
+                                <li> <a href="{% url 'products' %}?category={{ category.id }}" class="nav-link">{{category.name}}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </nav>
+                </div>
+    
+                
+                <div class="sidebar-widget brands">
+                    <h2 class="title">Our Brands</h2>
+                    <ul>
+                        {% for brand in brands%}
+                        <li><a href="{% url 'products_by_brand' brand.id %}">{{ brand.name }} </a><span>({{ brand.product_count }})</span></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                
+                <div class="sidebar-widget tag">
+                    <h2 class="title">Tags Cloud</h2>
+                    <a href="#">Lorem ipsum</a>
+                    <a href="#">Vivamus</a>
+                    <a href="#">Phasellus</a>
+                    <a href="#">pulvinar</a>
+                    <a href="#">Curabitur</a>
+                    <a href="#">Fusce</a>
+                    <a href="#">Sem quis</a>
+                    <a href="#">Mollis metus</a>
+                    <a href="#">Sit amet</a>
+                    <a href="#">Vel posuere</a>
+                    <a href="#">orci luctus</a>
+                    <a href="#">Nam lorem</a>
+                </div>
+            </div>
+            <!-- Side Bar End -->
+                </div>
+            </div>
+        </div>
+        <!-- Product List End -->  
+        
+        <!-- Brand Start -->
+        <div class="brand">
+            <div class="container-fluid">
+                <div class="brand-slider">
+                    <div class="brand-item"><img src="{% static 'img/brand-1.png' %}" alt=""></div>
+                    <div class="brand-item"><img src="{% static 'img/brand-2.png' %}" alt=""></div>
+                    <div class="brand-item"><img src="{% static 'img/brand-3.png' %}" alt=""></div>
+                    <div class="brand-item"><img src="{% static 'img/brand-4.png' %}" alt=""></div>
+                    <div class="brand-item"><img src="{% static 'img/brand-5.png' %}" alt=""></div>
+                    <div class="brand-item"><img src="{% static 'img/brand-6.png' %}" alt=""></div>
+                </div>
+            </div>
+        </div>
+        <!-- Brand End -->
+
+        <script>
+            $(document).ready(function() {
+                $('.dropdown-toggle').dropdown();
+            });
+        </script>
+
+{% include 'base/footer.html' %}
+{% endblock content %}

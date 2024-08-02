@@ -1,0 +1,101 @@
+{% extends 'adminpanel/adminIndex.html' %}
+
+{% block content %}
+{%  load static %}
+    {% include 'adminpanel/header.html' %}
+    {% include 'adminpanel/nav.html' %}
+
+    <div id="page-wrapper">
+        <div id="page-inner">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>Admin Dashboard</h2>    
+                    <h5>Welcome {{user.username}} , Love to see you back. </h5>
+                </div>
+            </div>
+            <!-- /. ROW  -->
+            <hr />
+            
+            <!-- Existing Panels -->
+            <div class="row">
+                <div class="col-md-3 col-sm-6 col-xs-6">           
+                    <div class="panel panel-back noti-box">
+                        <span class="icon-box bg-color-red set-icon">
+                            <i class="fa fa-envelope-o"></i>
+                        </span>
+                        <div class="text-box">
+                            <p class="main-text">Categorys</p>
+                            <p class="text-muted">{{ category_count }}</p>
+                        </div>
+                        <a href="{% url 'category-detail' %}" class="btn btn-primary">Detail</a>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-xs-6">           
+                    <div class="panel panel-back noti-box">
+                        <span class="icon-box bg-color-green set-icon">
+                            <i class="fa fa-bars"></i>
+                        </span>
+                        <div class="text-box">
+                            <p class="main-text">Brand </p>
+                            <p class="text-muted">{{ brand_count }}</p>
+                        </div>
+                        <a href="{% url 'brand-detail' %}" class="btn btn-primary">Detail</a>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-xs-6">           
+                    <div class="panel panel-back noti-box">
+                        <span class="icon-box bg-color-blue set-icon">
+                            <i class="fa fa-bell-o"></i>
+                        </span>
+                        <div class="text-box">
+                            <p class="main-text">Products</p>
+                            <p class="text-muted">{{ product_count }}</p>
+                        </div>
+                        <a href="{% url 'productList' %}" class="btn btn-primary">Detail</a>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-xs-6">           
+                    <div class="panel panel-back noti-box">
+                        <span class="icon-box bg-color-brown set-icon">
+                            <i class="fa fa-rocket"></i>
+                        </span>
+                        <div class="text-box">
+                            <p class="main-text">{{total_orders}} Orders</p>
+                            .
+                            <p class="text-muted">Received : {{received_orders}}</p>
+                            <p class="text-muted">Delivered : {{delivered_orders}}</p>
+                        </div>
+                        <a href="{% url 'adminOrder' %}" class="btn btn-primary">Detail</a>
+                    </div>
+                </div>
+            </div>
+            <!-- /. ROW  -->
+            <hr />
+
+            <!-- Product List Section -->
+            <div class="row">
+                {% for product in products %}
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="panel panel-back noti-box">
+                        <a href="{% url 'product-detail' product.id %}">
+                            <span class="icon-box bg-color-green set-icon">
+                                <img class="img-responsive" src="{{ product.images.first.image.url }}" alt="{{ product.name }}" width="100" height="100">
+                            </span>
+                            <div class="text-box">
+                                <p class="main-text">{{ product.name }}</p>
+                                <p class="text-muted">Rs: {{ product.price }}</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Remaining Panels -->
+            <!-- Add the rest of your existing panels and sections here -->
+
+        </div>
+        <!-- /. PAGE INNER  -->
+    </div>
+    <!-- /. PAGE WRAPPER  -->
+{% endblock %}

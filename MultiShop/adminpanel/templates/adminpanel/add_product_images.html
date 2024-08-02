@@ -1,0 +1,25 @@
+{% extends 'adminpanel/adminIndex.html' %}
+
+{% block content %}
+{%  load static %}
+{% include 'adminpanel/header.html' %}
+{% include 'adminpanel/nav.html' %}
+        <div id="page-wrapper">
+            <div id="page-inner">
+                <div class="container my-5">
+                    
+                    <h1>Add images</h1>
+                    <br />
+                    <hr />
+                    <form method="POST" novalidate enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <label>Images</label>
+                        <br />
+                        <input class="form-control" multiple type="file" name="images" />
+                        <br />
+                        <button class="btn btn-primary my-3" type="submit">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+{% endblock %}

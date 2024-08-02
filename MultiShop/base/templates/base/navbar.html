@@ -1,0 +1,48 @@
+{% extends 'base/baseIndex.html' %}
+
+{% block content %}
+
+
+<!-- Nav Bar Start -->
+<div class="nav">
+    <div class="container-fluid">
+        <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+            <a href="#" class="navbar-brand">MENU</a>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                <div class="navbar-nav mr-auto">
+                    <a href="{% url 'home' %}" class="nav-item nav-link active">Home</a>
+                    <a href="{% url 'products' %}" class="nav-item nav-link">Products</a>
+                    <a href="{% url 'cart' %}" class="nav-item nav-link">Cart</a>
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'checkout' %}" class="nav-item nav-link">Checkout</a>
+                    <a href="{% url 'my-account' %}" class="nav-item nav-link">My Account</a>
+                    {% endif %}
+                    <a href="{% url 'wishlist' %}" class="nav-item nav-link">Wishlist</a>
+                    <a href="{% url 'contactUs' %}" class="nav-item nav-link">Contact Us</a>
+                </div>
+                
+                
+                
+                <div class="navbar-nav ml-auto">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'logoutUser' %}" class="nav-item nav-link">Logout</a>
+                        <a href="{% url 'my-account' %}" class="nav-item nav-link">{{ user.first_name }} {{ user.last_name }}</a>
+                    {% else %}
+                        
+                        <a href="{% url 'login' %}" class="nav-item nav-link">Login</a>
+                        <a href="{% url 'signup' %}" class="nav-item nav-link">Register</a>
+                        
+                    {% endif %}
+                        <a href="{% url 'adminLogin' %}" class="nav-item nav-link">Admin Login</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+</div>
+<!-- Nav Bar End --> 
+
+{% endblock content %}

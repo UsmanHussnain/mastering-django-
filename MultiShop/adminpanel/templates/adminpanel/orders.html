@@ -1,0 +1,96 @@
+{% extends "adminpanel/adminIndex.html" %}
+{% block content %}
+{% load cart %}
+{% load static %}
+{% include "adminpanel/header.html" %}
+{% include "adminpanel/nav.html" %}
+
+<div id="page-wrapper" >
+    <div id="page-inner">
+        <div class="row">
+            <div class="col-md-12">
+             <h2>Order List</h2>   
+                <h5>Welcome {{user.username}} , Love to see you back. </h5>
+            </div>
+        </div>
+         <!-- /. ROW  -->
+         <hr />
+
+        <!-- /. ROW  -->
+
+        <div class="row">
+            <div class="col-md-12">
+                <!--    Bordered Table  -->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Order List
+                    </div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div class="table-responsive table-bordered">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Sno.</th>
+                                        <th>Name</th>
+                                        <th>Product Name</th>
+                                        <th>Product Image</th>
+                                        <th>Quantity</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>Country</th>
+                                        <th>City</th>
+                                        <th>Address</th>
+                                        <th>Order Date </th>
+                                        <th>Price</th>
+                                        <th>Status</th>
+                                        <th>Edit</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for order in orders %}
+                                        {% for item in order.orderitem_set.all %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ order.user.first_name }} {{ order.user.last_name }}</td>
+                                        <td>{{ item.product.name }}</td>
+                                        <td>
+                                            <div class="img">
+                                                <a href="{% url 'product-detail' item.product.id %}">
+                                                    <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" width="70" height="70">
+                                                </a>
+                                            </div>
+                                        </td>
+                                        <td>{{item.quantity}}</td>
+                                        <td>{{ order.email }}</td>
+                                        <td>{{ order.phone }}</td>
+                                        <td>{{ order.country }}</td>
+                                        <td>{{ order.city }}</td>
+                                        <td>{{ order.address }}</td>
+                                        <td>{{ order.order_date }}</td>
+                                        <td>{{ item.product.price }}</td>
+                                        <td>{{ order.status }}</td>
+                                        <td><a href="{% url 'edit_order' order.id %}" class="btn btn-primary">Edit</a></td>
+                                    </tr>
+                                        {% endfor %}
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="13">No orders found.</td>
+                                    </tr>
+                                    {% endfor %}    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!--  End  Bordered Table  -->
+            </div>
+        </div>
+
+    </div>
+     <!-- /. PAGE INNER  -->
+</div>
+
+
+{% endblock content %}

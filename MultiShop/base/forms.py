@@ -1,14 +1,14 @@
-# forms.py
-
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
-from .models import User
+from .models import customuser,Order, CustomerReview , Querries
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
 
 class SignupForm(forms.ModelForm):
     password = forms.CharField(label='Password', strip=False, widget=forms.PasswordInput)
 
     class Meta:
-        model = User
+        model = customuser
         fields = ['first_name', 'last_name', 'father_name', 'username', 'email', 'password', 'gender', 'province', 'city', 'dob', 'phone', 'about', 'profile_pic']
         widgets = {
             'password': forms.PasswordInput(),
@@ -27,29 +27,64 @@ class CustomAuthenticationForm(AuthenticationForm):
         username = self.cleaned_data.get('username')
         password = self.cleaned_data.get('password')
 
-        # Check if the username is an email
         if '@' in username:
             try:
-                user = User.objects.get(email=username)
-            except User.DoesNotExist:
-                user = None
+                user = customuser.objects.get(email=username)
+            except customuser.DoesNotExist:
+                raise ValidationError(_('Invalid email or password.'), code='invalid')
         else:
-            user = User.objects.get(username=username)
-        if user is not None:
-            # Authenticate the user with provided password
-            if user.check_password(password):
+            user = customuser.objects.filter(username=username).first()
+
+        if user is not None and user.check_password(password):
+            if user.is_active:
                 self.user_cache = user
             else:
-                raise forms.ValidationError("Invalid email or password.")
+                raise ValidationError(_('This account is inactive.'), code='inactive')
         else:
-            raise forms.ValidationError("Invalid email or password.")
+            raise ValidationError(_('Invalid email or password.'), code='invalid')
 
         return self.cleaned_data
-    
 
 
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
-        model = User
+        model = customuser
         fields = ['first_name', 'last_name', 'father_name', 'username', 'email', 'gender', 'province', 'city', 'dob', 'phone', 'about', 'profile_pic']
 
+
+class OrderForm(forms.ModelForm):
+    class Meta:
+        model = Order
+        fields = [
+            'first_name', 'last_name', 'email', 'phone', 'address', 'country', 
+            'city', 'state', 'zip_code', 'shipping_first_name', 'shipping_last_name', 
+            'shipping_email', 'shipping_phone', 'shipping_address', 'shipping_country', 
+            'shipping_city', 'shipping_state', 'shipping_zip_code', 'payment_method', 'status'
+        ]
+        
+        
+class CustomerReviewForm(forms.ModelForm):
+    class Meta:
+        model = CustomerReview
+        fields = ['profession', 'review', 'product']
+        widgets = {
+            'product': forms.HiddenInput(),
+        }
+        
+class QuerriesForm(forms.ModelForm):
+    class Meta:
+        model = Querries
+        fields = [
+            'subject', 'message'
+        ]
+        
+        widgets = {
+            'subject': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter the subject',
+            }),
+            'message': forms.Textarea(attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter your message',
+            }),
+        }

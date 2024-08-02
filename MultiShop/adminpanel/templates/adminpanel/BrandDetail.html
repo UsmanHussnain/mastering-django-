@@ -1,0 +1,69 @@
+{% extends 'adminpanel/adminIndex.html' %}
+{% block content %}
+{% load static %}
+{% include 'adminpanel/header.html' %}
+{% include 'adminpanel/nav.html' %}
+
+<div id="page-wrapper">
+    <div id="page-inner">
+
+        <a href="{% url 'adminIndex' %}" class="btn btn-primary">Back</a>
+
+        <h1>Add Brand</h1>
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="{{ form.name.id_for_label }}">Name</label>
+                {{ form.name }}
+            </div>
+            
+            <button type="submit" class="btn btn-success">Submit</button>
+        </form>
+        <br>
+        <div class="col-md-6">
+            <!--    Bordered Table  -->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Brand Table
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="table-responsive table-bordered">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Sno. </th>
+                                    <th>Brand Name</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {%for brand in brands %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ brand.name }}</td>
+                                    <td>
+                                        <form method="POST" action="{% url 'delete-brand' brand.id %}">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-danger">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                    <tr colspan='3'>
+                                        <td>No Brand found.</td>
+                                    </tr>
+                                {% endfor %}
+                               
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+             <!--  End  Bordered Table  -->
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
