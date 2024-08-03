@@ -1,6 +1,6 @@
 from django.urls import path 
 from .views import home, adminIndex,productList, uiElements,tabPanel, charts, table, forms, blankpage, adminLogin, adminLogout, create_Super_User
-from .views import add_product, edit_product, product_detail   , add_product_images_view, delete_product, adminOrder, edit_order, category_detail, delete_category , brand_detail, delete_brand, list_querries, delete_querry
+from .views import add_product, edit_product, product_detail   , add_product_images_view, delete_product, adminOrder, edit_order, category_detail, delete_category , brand_detail, delete_brand, list_querries, delete_querry, adminReviews , delete_review
 urlpatterns = [
    path('', home , name = 'home'),
    path('adminIndex',adminIndex  , name = 'adminIndex'),
@@ -29,6 +29,9 @@ urlpatterns = [
     path('deleteBrand/<int:brand_id>/', delete_brand, name='delete-brand'),
     path('querries/', list_querries, name='querries'),
     path('delete-querry/<int:pk>/', delete_querry, name='delete-querry'),
+    path('reviews/', adminReviews, name='reviews'),
+    path('delete-review/<int:pk>/', delete_review, name='delete-review'),
+    
    
    
     
