@@ -14,11 +14,11 @@ PROVINCE_CHOICES = (
 
 
 PAYMENT_METHOD_CHOICES = (
-    ('paypal', 'Paypal'),
-    ('payoneer', 'Payoneer'),
-    ('check', 'Check Payment'),
-    ('bank', 'Direct Bank Transfer'),
     ('cod', 'Cash on Delivery'),
+    ('Jazzcash', 'Jazzcash'),
+    ('EasyPaisa', 'EasyPaisa'),
+    ('SadaPay', 'SadaPay'),
+    ('HBL', 'Habib Band Limited'),
     )
 
 ORDER_CHOICES = (
