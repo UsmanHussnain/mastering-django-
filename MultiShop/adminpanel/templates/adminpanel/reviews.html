@@ -8,7 +8,7 @@
     <div id="page-inner">      
         <div class="row">
             <div class="col-md-12">
-             <h2>Querries List</h2>   
+             <h2>Reviews List</h2>   
                 <h5>Welcome {{user.username}} , Love to see you back. </h5>
             </div>
         </div>
@@ -19,7 +19,7 @@
             <!--    Bordered Table  -->
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Querries Table
+                    Reviews Table
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
@@ -30,39 +30,56 @@
                                     <th>Sno. </th>
                                     <th>Name</th>
                                     <th>Email</th>
-                                    <th>Subject</th>
-                                    <th>Message</th>
+                                    <th>Profession</th>
+                                    <th>Review</th>
+                                    <th>Product Name</th>
+                                    <th>Product Image</th>
                                     <th>Delete</th>
 
                                 </tr>
                             </thead>
                             <tbody>
-                                {%for querry in querries %}
+                                {%for review in reviews %}
                                 <tr>
                                     <td>{{ forloop.counter }}</td>
                                     <td>
-                                        {{ querry.user.first_name }} {{ querry.user.last_name }}
+                                        {{ review.user.first_name }} {{ review.user.last_name }}
                                     </td>
                                     <td>
-                                        {{ querry.user.email }}
+                                        {{ review.user.email }}
                                     </td>
                                     <td>
-                                        {{ querry.subject }}
+                                        {{ review.profession }}
                                     </td>
                                     
                                     <td>
-                                        {{ querry.message|truncatechars:100 }}
+                                        {{ review.review }}
                                     </td>
                                     <td>
-                                        <form method="POST" action="{% url 'delete-querry' querry.id %}">
+                                        <a href="{% url 'product-detail' review.product.id %}">
+                                            {{ review.product.name }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'product-detail' review.product.id %}">
+                                            {% if review.product.image %}
+                                                <img src="{{ review.product.image.url }}" alt="{{ review.product.name }}" style="width: 70px; height: 70px;"/>
+                                            {% else %}
+                                                No image available
+                                            {% endif %}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <form method="POST" action="{% url 'delete-review' review.id %}">
                                             {% csrf_token %}
                                             <button type="submit" class="btn btn-danger">Delete</button>
                                         </form>
-                                    </td>
+                                    </td> 
+                                    
 
                                 </tr>
                                 {% empty %}
-                                    <tr colspan='5'>
+                                    <tr colspan='6'>
                                         <td>No Brand found.</td>
                                     </tr>
                                 {% endfor %}
