@@ -1,0 +1,80 @@
+{% extends 'adminpanel/adminIndex.html' %}
+{% block content %}
+{% load static %}
+{% include 'adminpanel/header.html' %}
+{% include 'adminpanel/nav.html' %}
+
+<div id="page-wrapper">
+    <div id="page-inner">      
+        <div class="row">
+            <div class="col-md-12">
+             <h2>Querries List</h2>   
+                <h5>Welcome {{user.username}} , Love to see you back. </h5>
+            </div>
+        </div>
+         <!-- /. ROW  -->
+         <hr />
+  
+        <div class="col-md-6">
+            <!--    Bordered Table  -->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Querries Table
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="table-responsive table-bordered">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Sno. </th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Subject</th>
+                                    <th>Message</th>
+                                    <th>Delete</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {%for querry in querries %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>
+                                        {{ querry.user.first_name }} {{ querry.user.last_name }}
+                                    </td>
+                                    <td>
+                                        {{ querry.user.email }}
+                                    </td>
+                                    <td>
+                                        {{ querry.subject }}
+                                    </td>
+                                    
+                                    <td>
+                                        {{ querry.message|truncatechars:100 }}
+                                    </td>
+                                    <td>
+                                        <form method="POST" action="{% url 'delete-querry' querry.id %}">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-danger">Delete</button>
+                                        </form>
+                                    </td>
+
+                                </tr>
+                                {% empty %}
+                                    <tr colspan='5'>
+                                        <td>No Brand found.</td>
+                                    </tr>
+                                {% endfor %}
+                               
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+             <!--  End  Bordered Table  -->
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
