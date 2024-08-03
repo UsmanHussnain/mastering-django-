@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, get_user_model, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db import models
 from .forms import SuperuserCreationForm
 from base.forms import OrderForm
@@ -15,6 +15,12 @@ import os
 User = get_user_model()
 
 # Create your views here.
+def superuser_required(view_func):
+    decorated_view_func = user_passes_test(
+        lambda user: user.is_superuser,
+        login_url='adminLogin'
+    )(view_func)
+    return decorated_view_func
 
 def home(request):
     return render(request, 'base/home.html')
@@ -40,6 +46,7 @@ def adminLogin(request):
 
 
 @login_required(login_url='adminLogin')
+@superuser_required
 def adminIndex(request):
     category_count = Category.objects.count()
     brand_count = Brand.objects.count()
@@ -64,6 +71,7 @@ def adminIndex(request):
 
 
 @login_required(login_url='adminLogin')
+@superuser_required
 def adminLogout(request):
     logout(request)
     return redirect('home')
@@ -71,37 +79,44 @@ def adminLogout(request):
 
 
 @login_required(login_url='adminLogin')
+@superuser_required
 def uiElements(request):
     return render(request, 'adminpanel/ui.html')
 
 
 @login_required(login_url='adminLogin')
+@superuser_required
 def tabPanel(request):
     return render(request, 'adminpanel/tab-panel.html')
 
 
 @login_required(login_url='adminLogin')
+@superuser_required
 def charts(request):
     return render(request, 'adminpanel/chart.html')
 
 
 @login_required(login_url='adminLogin')
+@superuser_required
 def table(request):
     return render(request, 'adminpanel/table.html')
 
 
 @login_required(login_url='adminLogin')
+@superuser_required
 def forms(request):
     return render(request, 'adminpanel/form.html')
 
 
 @login_required(login_url='adminLogin')
+@superuser_required
 def blankpage(request):
     return render(request, 'adminpanel/blank.html')
 
 
 
 @login_required(login_url='adminLogin')
+@superuser_required
 def create_Super_User(request):
     if request.user.is_authenticated and request.user.is_superuser:
        
@@ -124,6 +139,7 @@ def create_Super_User(request):
 
 
 @login_required(login_url='adminLogin')
+@superuser_required
 def add_product(request):
     if request.method == 'POST':
         product_form = ProductForm(request.POST, request.FILES)
@@ -150,6 +166,7 @@ def add_product(request):
 
 
 @login_required(login_url='adminLogin')
+@superuser_required
 def edit_product(request, pk):
     product = get_object_or_404(Product, pk=pk)
 
@@ -171,6 +188,7 @@ def edit_product(request, pk):
     return render(request, 'adminpanel/edit_product.html', context)
 
 @login_required(login_url='adminLogin')
+@superuser_required
 def product_detail(request, pk):
     product = get_object_or_404(Product, pk=pk)
     context = { 
@@ -180,6 +198,7 @@ def product_detail(request, pk):
     return render(request, 'adminpanel/product_detail.html', context)
 
 @login_required(login_url='adminLogin')
+@superuser_required
 def productList(request):
     products = Product.objects.all()
     user = request.user
@@ -196,6 +215,7 @@ def productList(request):
 
 
 @login_required(login_url='adminLogin')
+@superuser_required
 def add_product_images_view(request, pk):
     product = get_object_or_404(Product, pk=pk)
     
@@ -216,6 +236,7 @@ def add_product_images_view(request, pk):
 
 
 @login_required(login_url='adminLogin')
+@superuser_required
 def delete_product(request, pk):
     product = get_object_or_404(Product, pk=pk)
     for image in product.images.all():
@@ -228,6 +249,7 @@ def delete_product(request, pk):
 
 
 @login_required(login_url='adminLogin')
+@superuser_required
 def adminOrder(request):
     user = request.user
     orders = Order.objects.all().prefetch_related('orderitem_set__product')
@@ -242,6 +264,7 @@ def adminOrder(request):
     return render(request, 'adminpanel/orders.html', context)
 
 @login_required(login_url='adminLogin')
+@superuser_required
 def edit_order(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     if request.method == 'POST':
@@ -262,6 +285,7 @@ def edit_order(request, order_id):
 
 
 @login_required(login_url='adminLogin')
+@superuser_required
 def category_detail(request):
     
     categories = Category.objects.all()
@@ -282,6 +306,7 @@ def category_detail(request):
 
 
 @login_required(login_url='adminLogin')
+@superuser_required
 def delete_category(request, category_id):
     category = get_object_or_404(Category, id=category_id)
     if request.method == "POST":
@@ -291,6 +316,7 @@ def delete_category(request, category_id):
     
     
 @login_required(login_url='adminLogin')
+@superuser_required
 def brand_detail(request):
     
     brands = Brand.objects.all()
@@ -310,6 +336,7 @@ def brand_detail(request):
     return render(request, 'adminpanel/BrandDetail.html', context)
 
 @login_required(login_url='adminLogin')
+@superuser_required
 def delete_brand(request, brand_id):
     brand = get_object_or_404(Brand, id=brand_id)
     if request.method == "POST":
@@ -321,6 +348,7 @@ def delete_brand(request, brand_id):
 
 
 @login_required(login_url='adminLogin')
+@superuser_required
 def list_querries(request):
     querries = Querries.objects.all()
     user = request.user
@@ -332,6 +360,7 @@ def list_querries(request):
 
 
 @login_required(login_url='adminLogin')
+@superuser_required
 def delete_querry(request, pk):
     querry = get_object_or_404(Querries, pk=pk)
     if request.method == "POST":
