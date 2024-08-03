@@ -1,0 +1,80 @@
+{% extends 'adminpanel/adminIndex.html' %}
+{% block content %}
+{%  load static %}
+{% include 'adminpanel/header.html' %}
+{% include 'adminpanel/nav.html' %}
+
+    <a href="{% url 'productList' %}" class="btn btn-primary">Back</a>
+
+
+    <div id="page-wrapper">
+      <div id="page-inner">
+        <div class="row">
+          <div class="col-md-12">
+           <h2>Product Detail</h2>   
+              <h5>Welcome {{user.username}} , Love to see you back. </h5>
+          </div>
+      </div>
+       <!-- /. ROW  -->
+       <hr />
+
+      <!-- /. ROW  -->
+
+        <div class='container'>
+            <div class="row">
+
+                <div class="col-md-6">
+                  {% if product.images.exists %}
+                    <h3>Product Images:</h3>
+                    <img src="{{ product.images.first.image.url }}" alt="{{ product.name }}" class="img-fluid m-5" width="300" height="200">
+                    {% endif %}
+                </div>
+                <div class="col-md-12 col-lg-6">
+                    <h1>Product Detail</h1>
+
+
+                    <h1>{{ product.name }}</h1>
+                    <p>Description: {{ product.description }}</p>
+                    <p>Price: {{ product.price }}</p>
+                    <p>Total Quantity: {{ product.total_quantity }}</p>
+                    <p>Available Quantity: {{ product.available_quantity }}</p>
+                    <p>Brand: {{ product.brand.name }}</p>
+                    <p>Category: {{ product.category.name }}</p>
+                    {% if request.user.is_superuser %}
+                    <a href="{% url 'edit-product' product.pk %}" class="btn btn-primary"> Edit </a>
+                    <a href="{% url 'addimage' product.pk %}" class="btn btn-primary"> Add Product Photos </a>
+                    <form method="post" action="{% url 'product-delete' product.pk %}" class="d-inline">
+                      {% csrf_token %}
+                      <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this product?');">
+                        Delete
+                      </button>
+                    </form>      {% endif %}
+                  
+                </div>
+
+                <div class="col-md-12 col-lg-12">                
+                  {% if product.images.exists %}
+                  <h3>Product Images:</h3>                
+                  <div class="row mt-4">
+                    {% for image in product.images.all %}
+                      <div class="col-md-3 mb-4 border rounded">
+                        <img src="{{ image.image.url }}" alt="{{ product.name }}" class="img-fluid" width="150" height="125">
+                      </div>
+                    {% endfor %}
+                  </div>
+                  {% endif %}
+                </div>
+            </div>
+          </div>
+      </div>
+    </div>
+
+
+
+
+
+
+
+    
+
+{% endblock %}

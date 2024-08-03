@@ -1,0 +1,150 @@
+{% extends "base/baseIndex.html" %}
+{% block content %}
+{% load static %}
+{% include 'base/navbar.html' %}
+{% include 'base/bottombar.html' %}
+
+<!-- Breadcrumb Start -->
+<div class="breadcrumb-wrap">
+    <div class="container-fluid">
+        <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item active">Checkout</li>
+        </ul>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+
+<!-- Checkout Start -->
+<div class="checkout">
+    <div class="container-fluid"> 
+        <form method="POST" action="{% url 'checkout' %}">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="checkout-inner">
+                        <div class="billing-address">
+                            <h2>Billing Address</h2>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="id_first_name">First Name</label>
+                                    {{ form.first_name }}
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="id_last_name">Last Name</label>
+                                    {{ form.last_name }}
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="id_email">E-mail</label>
+                                    {{ form.email }}
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="id_phone">Mobile No</label>
+                                    {{ form.phone }}
+                                </div>
+                                <div class="col-md-12">
+                                    <label for="id_address">Address</label>
+                                    {{ form.address }}
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="id_country">Country</label>
+                                    {{ form.country }}
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="id_city">City</label>
+                                    {{ form.city }}
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="id_state">State</label>
+                                    {{ form.state }}
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="id_zip_code">ZIP Code</label>
+                                    {{ form.zip_code }}
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="shipto" name="ship_to_different_address">
+                                        <label class="custom-control-label" for="shipto">Ship to different address</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="shipping-address" id="shipping-address" style="display: none;">
+                            <h2>Shipping Address</h2>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="id_shipping_first_name">First Name</label>
+                                    {{ form.shipping_first_name }}
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="id_shipping_last_name">Last Name</label>
+                                    {{ form.shipping_last_name }}
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="id_shipping_email">E-mail</label>
+                                    {{ form.shipping_email }}
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="id_shipping_phone">Mobile No</label>
+                                    {{ form.shipping_phone }}
+                                </div>
+                                <div class="col-md-12">
+                                    <label for="id_shipping_address">Address</label>
+                                    {{ form.shipping_address }}
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="id_shipping_country">Country</label>
+                                    {{ form.shipping_country }}
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="id_shipping_city">City</label>
+                                    {{ form.shipping_city }}
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="id_shipping_state">State</label>
+                                    {{ form.shipping_state }}
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="id_shipping_zip_code">ZIP Code</label>
+                                    {{ form.shipping_zip_code }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="checkout-inner">
+                        <div class="checkout-payment">
+                            <div class="payment-methods">
+                                <h1>Payment Methods</h1>
+                                {% for payment_method in form.payment_method.field.choices %}
+                                <div class="payment-method">
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" class="custom-control-input" id="payment-{{ forloop.counter }}" name="payment_method" value="{{ payment_method.0 }}">
+                                        <label class="custom-control-label" for="payment-{{ forloop.counter }}">{{ payment_method.1 }}</label>
+                                    </div>
+                                    <div class="payment-content" id="payment-{{ forloop.counter }}-show">
+                                        <p>
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt orci ac eros volutpat maximus lacinia quis diam.
+                                        </p>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <div class="checkout-btn">
+                                <button type="submit" >Place Order</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Checkout End -->
+
+{% include 'base/footer.html' %}
+{% endblock %}

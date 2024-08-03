@@ -1,0 +1,40 @@
+﻿{% extends 'adminpanel/adminIndex.html' %}
+{% block content %}
+{%  load static %}
+{% include 'adminpanel/header.html' %}
+{% include 'adminpanel/nav.html' %}
+
+        <div id="page-wrapper" >
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-md-12">
+                     <h2>Blank Page</h2>   
+
+                     <h5>Welcome {{user.username}} , Love to see you back. </h5>
+                        <div class="row">
+                            {% for product in products %}
+                            <div class="col-md-4">
+                                <div class="card h-100">
+                                    <a href="{% url 'product-detail' product.id %}">
+                                        <img class="card-img-top" src="{{ product.images.first.image.url }}" alt="{{ product.name }}" width=300 height=200>
+                                        <h5 class="card-title">{{ product.name }}</h5>
+                                    </a>
+                                    <div class="card-body">
+                                        <p class="card-text">Rs: {{ product.price }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                       
+                    </div>
+                </div>
+                 <!-- /. ROW  -->
+                 <hr />
+               
+    </div>
+             <!-- /. PAGE INNER  -->
+            </div>
+         <!-- /. PAGE WRAPPER  -->
+        </div>
+{% endblock content %}

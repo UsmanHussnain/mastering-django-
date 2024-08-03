@@ -1,0 +1,23 @@
+{% extends 'adminpanel/adminIndex.html' %}
+{% block content %}
+{%  load static %}
+{% include 'adminpanel/header.html' %}
+{% include 'adminpanel/nav.html' %}
+
+<div id="page-wrapper">
+    <div id="page-inner">
+
+        <a href="{% url 'productList' %}" class="btn btn-primary">Back</a>
+
+        <h1>Add Product</h1>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ product_form.as_p }}
+            <button type="submit" class="btn btn-success">Submit</button>
+        </form>
+
+    </div>
+</div>
+
+{% endblock content %}
