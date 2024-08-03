@@ -7,7 +7,7 @@ from base.forms import OrderForm
 from django.contrib.auth import get_user_model
 from base.models import customuser , Order
 from django.shortcuts import render, get_object_or_404, redirect
-from base.models import Product, ProductImage, Category, Brand , Querries
+from base.models import Product, ProductImage, Category, Brand , Querries, CustomerReview
 from .forms import ProductForm, ProductImageForm , CategoryForm , BrandForm
 import os
 
@@ -366,3 +366,29 @@ def delete_querry(request, pk):
     if request.method == "POST":
         querry.delete()
         return redirect('querries')
+    
+    
+    
+@login_required(login_url='adminLogin')
+@superuser_required
+def adminReviews(request):
+    reviews = CustomerReview.objects.all().select_related('user', 'product')
+    
+    user = request.user
+    context = {
+        'user': user,
+        'reviews': reviews,
+        
+    }   
+    return render(request, 'adminpanel/reviews.html', context)
+
+
+
+@login_required(login_url='adminLogin')
+@superuser_required
+def delete_review(request, pk):
+    review = get_object_or_404(CustomerReview, pk=pk)
+    if request.method == "POST":
+        review.delete()
+        return redirect('reviews')
+    
