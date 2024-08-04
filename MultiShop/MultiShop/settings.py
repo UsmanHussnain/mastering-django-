@@ -75,8 +75,16 @@ WSGI_APPLICATION = 'MultiShop.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': BASE_DIR / 'db.sqlite3',
+        
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'multishop',  # Database name
+        'USER': 'usman',            # Database user
+        'PASSWORD': 'usman',        # Database user password
+        'HOST': 'localhost',         # Set to empty string for localhost.
+        'PORT': '5432',              # Set to empty string for default.
     }
 }
 
