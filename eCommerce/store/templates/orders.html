@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load cart %}
+{% load custom_filter %}
+
+
+<div class="container">
+    <div class='m-5 mt-8 p-5'>
+        <div class= 'mx-auto border rounded py-4 px-4'>
+            <h3 class="alert alert-light text-center border rounded">Your Orders</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Sno. </th>
+                        <th>Image</th>
+                        <th>Product</th>
+                        <th>Date</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                    <tr>
+                        <td> {{forloop.counter}}</td>
+                        <td><img src="{{order.product.image.url}}" alt="" class="rounded" style="width: 50px;"></td>
+                        <td>{{order.product.name}}</td>
+                        <td>{{order.date}}</td>
+                        <td>{{order.price|currency}}</td>
+                        <td>{{order.quantity}}</td>
+                        <td>{{order.quantity|multiply:order.price|currency}}</td>
+                        {% if order.status %}
+                            <td><small class="badge badge-success border rounded bg-success">Completed</small></td>
+                        {% else %}
+                            <td><small class="badge badge-warning border rounded bg-danger">Pending</small></td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+   
+</div>
+
+
+
+
+
+{% endblock  %}
+
